@@ -158,10 +158,8 @@ for rf=rfIdx0:rfIdxN
     end
 
     nr = nb / bytesPerSample;
-    tempData = fread(fid, nr, dtype); % Read whatever is left into a temp variable
-    actual_nr = length(tempData);     % Count how many samples we actually got
-    DATA(dataIdx:dataIdx + actual_nr - 1) = tempData; % Only fill that many slots
-    dataIdx = dataIdx + actual_nr;    % Update the index correctly
+    DATA(dataIdx:dataIdx + nr - 1) = fread(fid, nr, dtype);
+    dataIdx = dataIdx + nr;
 
 end
 

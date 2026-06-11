@@ -1,4 +1,3 @@
-
 function sm_get_headers_recur
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -27,10 +26,12 @@ if fnsz(2)>80
 end
 
 if nfiles < 1
-    disp_msg('No data files found in the selected input directory.');
+    disp_msg(['No data files in this directory: ',PARAMS.inputDir])
     disp_msg('Pick another directory')
-    return % <--- ADD THIS LINE so it stops running!
+    %sm_ltsa_params_window; % in gui folder, related to the pop up window with all of our inputted parameters
 end
+
+
 
 PARAMS.nxwav = fnsz(1);           % number of xwav files
 
@@ -156,6 +157,5 @@ PARAMS.ltsahd.sample_rate = double(PARAMS.ltsahd.sample_rate);  % sample rate of
 PARAMS.ltsahd.gain = double(PARAMS.ltsahd.gain);          % gain (1 = no change)
 PARAMS.ltsahd.fname(m,:) = PARAMS.fname(k).name;        % xwav file name for this raw file header
 PARAMS.ltsahd.fnum(m) = k;
-disp(['Trying to process k = ', num2str(k)])
 disp(['Total number of raw files: ',num2str(PARAMS.ltsa.nrftot)])
 disp(['Version ',num2str(PARAMS.ltsa.ver)])

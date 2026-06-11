@@ -1,4 +1,3 @@
-
 function sm_calc_HMD
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % VMZ 6/25/2025 (copied parts from SoundScape Remora)
@@ -375,12 +374,6 @@ parfor i = 1:length(allDays)
     % Close figure to free memory
     close(fig);
 
-    % --- EMERGENCY CHECKPOINT ---
-    % Save the raw math to a .mat file just in case the NetCDF fails
-    checkpoint_name = fullfile(localParams.metadata.outputDir, ['CHECKPOINT_', datestr(dayStart, 'yyyymmdd'), '.mat']);
-    parsave_checkpoint(checkpoint_name, psd_matrix, time_matrix);
-    % ----------------------------
-
     ncid = netcdf.create(fullfile(localParams.metadata.outputDir, outName), 'NETCDF4');
 
 
@@ -453,9 +446,8 @@ parfor i = 1:length(allDays)
     netcdf.putAtt(ncid, effortVarID, 'units', 'percent');
 
     % xwav file associated with measurement
-    % xwavFileVarID = netcdf.defVar(ncid, 'xwavFile', 'NC_CHAR', dimNumFilesID);
-    % xwavFileVarID = netcdf.defVar(ncid, 'xwavFile', 'NC_STRING', dimNumFilesID);
-    % older version of Matlab doesn't recognize 'string' data types yet
+    % xwavFileVarID = netcdf.defVar(ncid, 'xwavFile', 'NC_CHAR', xwavFileDimID);
+    xwavFileVarID = netcdf.defVar(ncid, 'xwavFile', 'NC_STRING', dimNumFilesID);
 
     % End Define Mode
     netcdf.endDef(ncid);
@@ -470,24 +462,11 @@ parfor i = 1:length(allDays)
     netcdf.putVar(ncid, freqVarID, double(freqTable(:, 2)));
     netcdf.putVar(ncid, psdVarID, double(bandsOut'));
     netcdf.putVar(ncid, effortVarID, double(minPrct_vec(:)));
-    % netcdf.putVar(ncid, xwavFileVarID, xwav_file);
+    netcdf.putVar(ncid, xwavFileVarID, xwav_file);
     netcdf.close(ncid);
     disp(['Saved NetCDF: ', fullfile(localParams.metadata.outputDir, outName)]);
-    
-    % --- CLEANUP CHECKPOINT ---
-    % If the script made it to this line, the NetCDF saved perfectly!
-    % We no longer need the emergency backup, so delete the massive .mat file.
-    if exist(checkpoint_name, 'file')
-        delete(checkpoint_name);
-    end
-    % --------------------------
 
 
 end
 
-end
-
-% --- HELPER FUNCTION FOR PARALLEL SAVING ---
-function parsave_checkpoint(filename, psd_matrix, time_matrix)
-    save(filename, 'psd_matrix', 'time_matrix');
 end

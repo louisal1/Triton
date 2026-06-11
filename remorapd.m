@@ -1,4 +1,4 @@
-function miscpd(action)
+function remorapd(action)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % remorapd.m
@@ -6,16 +6,19 @@ function miscpd(action)
 % the callback for all the remora pull down actions.
 %
 % Parameters:
-%         action - a string that is the action to be preformed
+%       action  - a string that is the action to be preformed
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 global PARAMS HANDLES DATA REMORA
 
+% --- BULLETPROOF PATH FIX ---
+% Hardcoding the paths here ensures the script never fails even if the 
+% global PARAMS variable drops out of MATLAB's memory.
+PARAMS.path.Triton = 'C:\Users\pam_user\Documents\Triton';
+PARAMS.path.Settings = 'C:\Users\pam_user\Documents\Triton\Settings';
+PARAMS.path.Remoras = 'C:\Users\pam_user\Documents\Triton\Remoras';
+% ----------------------------
 
-% set variables used by multiple cases
-% RemoraConfFile = fullfile(fileparts(which('triton')), 'Settings',...
-%     'InstalledRemoras.cnf');
-% TritonRemoraDir = fullfile(fileparts(which('triton')), 'Remora');
 RemoraConfFile = fullfile(PARAMS.path.Settings,'InstalledRemoras.cnf');
 
 switch action

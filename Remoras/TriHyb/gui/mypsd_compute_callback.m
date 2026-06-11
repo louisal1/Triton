@@ -26,26 +26,26 @@ latlon = str2double(strsplit(erase(erase(get(REMORA.mypsd.gui.SiteLocation_, 'St
 [PARAMS.metadata.latitude, PARAMS.metadata.longitude] = deal(latlon(1), latlon(2));
 
 % Plot the location on a geographic map
-figure(500)
-geoplot(PARAMS.metadata.latitude, PARAMS.metadata.longitude, 'p', 'MarkerSize', 30, ...
-    'MarkerFaceColor', [1.0, 0.6, 0.8] , ...
-    'MarkerEdgeColor', 'k', ...
-    'LineWidth', 1.5);
-geobasemap satellite
+% figure(500)
+%geoplot(PARAMS.metadata.latitude, PARAMS.metadata.longitude, 'p', 'MarkerSize', 30, ...
+   % 'MarkerFaceColor', [1.0, 0.6, 0.8] , ...
+   % 'MarkerEdgeColor', 'k', ...
+   % 'LineWidth', 1.5);
+% geobasemap satellite
 
 % Set map limits around the point
-latBuffer = 5;
-lonBuffer = 5;
-geolimits([PARAMS.metadata.latitude - latBuffer, PARAMS.metadata.latitude + latBuffer], [PARAMS.metadata.longitude - lonBuffer, PARAMS.metadata.longitude + lonBuffer]);
-title([PARAMS.metadata.organization ' ' PARAMS.metadata.project ' ' PARAMS.metadata.site ' ' PARAMS.metadata.deployment])
-outNameMap = [
-    PARAMS.metadata.organization, '_', ...
-    PARAMS.metadata.project, '_', ...
-    PARAMS.metadata.site, '_', ...
-    PARAMS.metadata.deployment, '_', 'siteMap.png'];
-outFileMap = fullfile(PARAMS.metadata.outputDir, outNameMap);
+% latBuffer = 5;
+% lonBuffer = 5;
+% geolimits([PARAMS.metadata.latitude - latBuffer, PARAMS.metadata.latitude + latBuffer], [PARAMS.metadata.longitude - lonBuffer, PARAMS.metadata.longitude + lonBuffer]);
+% title([PARAMS.metadata.organization ' ' PARAMS.metadata.project ' ' PARAMS.metadata.site ' ' PARAMS.metadata.deployment])
+% outNameMap = [
+   % PARAMS.metadata.organization, '_', ...
+   % PARAMS.metadata.project, '_', ...
+   % PARAMS.metadata.site, '_', ...
+  %  PARAMS.metadata.deployment, '_', 'siteMap.png'];
+% outFileMap = fullfile(PARAMS.metadata.outputDir, outNameMap);
 
-saveas(gcf, outFileMap);
+% saveas(gcf, outFileMap);
 
 
 % META DATA
