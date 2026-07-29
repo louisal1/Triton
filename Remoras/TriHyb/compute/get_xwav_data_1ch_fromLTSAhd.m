@@ -136,7 +136,11 @@ for rf=rfIdx0:rfIdxN
         b1 = skip_samp*floor(localParams.ltsa.nBits/8);
         fseek(fid,b1,'cof');
         % read from start loc to end loc in 1 raw file
-        nb = (end_samp - skip_samp) * bytesPerSample;
+        
+        % nb = (end_samp - skip_samp) * bytesPerSample;
+        requested_bytes = (end_samp - skip_samp) * bytesPerSample;
+        max_available_bytes = localParams.xhd.byte_length(rf) - b1;
+        nb = min(requested_bytes, max_available_bytes);
 
     elseif rf == rfIdx0
         % First raw file in a multi-file segment
@@ -145,8 +149,9 @@ for rf=rfIdx0:rfIdxN
         nb = localParams.xhd.byte_length(rf) - b1;
     elseif rf == rfIdxN
         % Final raw file in a multi-file segment
-        nb = end_samp * bytesPerSample;
-
+        % nb = end_samp * bytesPerSample;
+        nb = min(end_samp * bytesPerSample, localParams.xhd.byte_length(rf));
+        
     else
         % Fully included raw file in between
         nb = localParams.xhd.byte_length(rf);
@@ -158,10 +163,13 @@ for rf=rfIdx0:rfIdxN
     end
 
     nr = nb / bytesPerSample;
-    tempData = fread(fid, nr, dtype); % Read whatever is left into a temp variable
-    actual_nr = length(tempData);     % Count how many samples we actually got
-    DATA(dataIdx:dataIdx + actual_nr - 1) = tempData; % Only fill that many slots
-    dataIdx = dataIdx + actual_nr;    % Update the index correctly
+    DATA(dataIdx:dataIdx + nr - 1) = fread(fid, nr, dtype);
+    dataIdx = dataIdx + nr;
+    
+    % tempData = fread(fid, nr, dtype); % Read whatever is left into a temp variable
+    % actual_nr = length(tempData);     % Count how many samples we actually got
+    % DATA(dataIdx:dataIdx + actual_nr - 1) = tempData; % Only fill that many slots
+    % dataIdx = dataIdx + actual_nr;    % Update the index correctly
 
 end
 

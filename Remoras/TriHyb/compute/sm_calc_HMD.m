@@ -83,7 +83,8 @@ disp(['Creating HMD Products for ', PARAMS.metadata.project, ' ', PARAMS.metadat
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 PARAMS_local = PARAMS; % copy global to local before parallel loop
 
-parfor i = 1:length(allDays)
+%par
+for i = 1:length(allDays)
     % Only first worker uses GPU (safer for parfor)
     %useGPU = (labindex == 1);
 
